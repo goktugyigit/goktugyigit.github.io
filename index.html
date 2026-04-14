@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Göktuğ Yiğit - CV İndir</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    width: 100%;
+    min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    background: #ffffff;
+    color: #0a0a0a;
+    cursor: default;
+    user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -webkit-touch-callout: none;
+  }
+  * { cursor: inherit; }
+  a, button { cursor: pointer; }
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px 16px;
+    position: relative;
+    overflow-x: hidden;
+  }
+  #stars {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .card { position: relative; z-index: 1; }
+  .cursor-dot, .cursor-ring {
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    mix-blend-mode: difference;
+  }
+  .cursor-dot {
+    width: 6px;
+    height: 6px;
+    background: #fff;
+    border-radius: 50%;
+    transition: width 0.2s ease, height 0.2s ease;
+  }
+  .cursor-ring {
+    width: 36px;
+    height: 36px;
+    border: 1.5px solid #fff;
+    border-radius: 50%;
+    transition: width 0.25s ease, height 0.25s ease, border-color 0.25s ease;
+  }
+  .cursor-ring.hover {
+    width: 60px;
+    height: 60px;
+  }
+  @media (hover: none) {
+    .cursor-dot, .cursor-ring { display: none; }
+  }
+  .card {
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+    padding: 40px 24px;
+  }
+  .avatar {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 24px;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #f3f3f3;
+  }
+  .avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  h1 {
+    font-size: clamp(24px, 6.5vw, 30px);
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: -0.6px;
+  }
+  .subtitle {
+    color: #666;
+    font-size: clamp(13px, 3.6vw, 15px);
+    margin-bottom: 28px;
+    font-weight: 400;
+  }
+  .divider {
+    height: 1px;
+    background: #e5e5e5;
+    margin: 0 0 28px;
+  }
+  .info {
+    color: #444;
+    font-size: clamp(13px, 3.5vw, 14px);
+    line-height: 1.65;
+    margin-bottom: 32px;
+  }
+  .download-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 17px 24px;
+    font-size: clamp(15px, 4vw, 17px);
+    font-weight: 600;
+    color: #fff;
+    background: #0a0a0a;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    text-decoration: none;
+    overflow: hidden;
+    isolation: isolate;
+    transition: transform 0.2s ease;
+  }
+  .download-btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 55%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.22),
+      transparent
+    );
+    transform: skewX(-18deg);
+    pointer-events: none;
+    z-index: 2;
+  }
+  .download-btn:hover::before {
+    left: 150%;
+    transition: left 0.55s ease;
+  }
+  .download-btn > * { position: relative; z-index: 3; }
+  .download-btn:hover { transform: translateY(-2px); }
+  .download-btn:active { transform: translateY(0); }
+  .download-btn svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+  .social-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+    width: 100%;
+  }
+  .social-link {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 14px;
+    color: #0a0a0a;
+    background: transparent;
+    border: 1.5px solid #0a0a0a;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  }
+  .social-link:hover {
+    background: #0a0a0a;
+    color: #fff;
+    transform: translateY(-2px);
+  }
+  .social-link svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+  .footer {
+    margin-top: 22px;
+    color: #999;
+    font-size: 12px;
+  }
+</style>
+</head>
+<body>
+  <canvas id="stars"></canvas>
+  <div class="cursor-ring" id="cursorRing"></div>
+  <div class="cursor-dot" id="cursorDot"></div>
+  <main class="card">
+    <div class="avatar"><img src="CV_FOTO_2.png" alt="Göktuğ Yiğit" draggable="false"></div>
+    <h1>Göktuğ Yiğit</h1>
+    <p class="subtitle">Özgeçmiş</p>
+    <div class="divider"></div>
+    <p class="info">Detaylı bilgiler için aşağıdaki butona tıklayarak CV'mi PDF olarak indirebilirsiniz.</p>
+    <a class="download-btn" href="GÖKTUĞ YİĞİT CV.pdf" download="Goktug_Yigit_CV.pdf">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+      CV'yi İndir (PDF)
+    </a>
+    <div class="social-row">
+      <a class="social-link" href="https://www.linkedin.com/in/goktuygt/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.61 0 4.27 2.38 4.27 5.47v6.27zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/>
+        </svg>
+        LinkedIn
+      </a>
+      <a class="social-link" href="https://github.com/goktugyigit" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.69-3.88-1.54-3.88-1.54-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.69 1.25 3.35.95.1-.74.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.18 1.18.92-.26 1.9-.39 2.88-.39.98 0 1.96.13 2.88.39 2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.12 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.7 5.4-5.27 5.69.41.36.78 1.06.78 2.14 0 1.55-.01 2.8-.01 3.18 0 .31.21.67.8.56C20.22 21.38 23.5 17.07 23.5 12 23.5 5.65 18.35.5 12 .5z"/>
+        </svg>
+        GitHub
+      </a>
+    </div>
+    <p class="footer">PDF • A4</p>
+  </main>
+  <script>
+  (function () {
+    const canvas = document.getElementById('stars');
+    const ctx = canvas.getContext('2d');
+    let w, h, stars, shooting = [];
+    const mouse = { x: -9999, y: -9999, active: false };
+    const STAR_COUNT = 160;
+    const INFLUENCE = 120;
+
+    function resize() {
+      const dpr = window.devicePixelRatio || 1;
+      w = canvas.width = window.innerWidth * dpr;
+      h = canvas.height = window.innerHeight * dpr;
+      canvas.style.width = window.innerWidth + 'px';
+      canvas.style.height = window.innerHeight + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function initStars() {
+      stars = [];
+      for (let i = 0; i < STAR_COUNT; i++) {
+        stars.push({
+          x: Math.random() * window.innerWidth,
+          y: Math.random() * window.innerHeight,
+          ox: 0, oy: 0,
+          r: Math.random() * 1.6 + 0.4,
+          tw: Math.random() * Math.PI * 2,
+          tws: Math.random() * 0.02 + 0.005,
+          vx: (Math.random() - 0.5) * 0.15,
+          vy: (Math.random() - 0.5) * 0.15
+        });
+      }
+    }
+
+    function spawnShooting() {
+      const startX = Math.random() * window.innerWidth * 0.6;
+      const startY = Math.random() * window.innerHeight * 0.4;
+      shooting.push({
+        x: startX, y: startY,
+        len: 80 + Math.random() * 60,
+        speed: 8 + Math.random() * 4,
+        life: 0, maxLife: 60,
+        angle: Math.PI / 5
+      });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+      for (const s of stars) {
+        s.x += s.vx; s.y += s.vy;
+        if (s.x < 0) s.x = window.innerWidth;
+        if (s.x > window.innerWidth) s.x = 0;
+        if (s.y < 0) s.y = window.innerHeight;
+        if (s.y > window.innerHeight) s.y = 0;
+
+        let dx = s.x - mouse.x;
+        let dy = s.y - mouse.y;
+        let dist = Math.sqrt(dx * dx + dy * dy);
+        let tx = s.x, ty = s.y;
+        if (mouse.active && dist < INFLUENCE) {
+          const force = (1 - dist / INFLUENCE);
+          tx += (dx / dist) * force * 25;
+          ty += (dy / dist) * force * 25;
+        }
+        s.ox += (tx - s.x - s.ox) * 0.08;
+        s.oy += (ty - s.y - s.oy) * 0.08;
+
+        s.tw += s.tws;
+        const twinkle = 0.55 + Math.sin(s.tw) * 0.35;
+        const glow = mouse.active && dist < INFLUENCE ? (1 - dist / INFLUENCE) : 0;
+
+        ctx.beginPath();
+        ctx.arc(s.x + s.ox, s.y + s.oy, s.r + glow * 1.2, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(10, 10, 10, ${Math.min(1, twinkle + glow * 0.6)})`;
+        ctx.fill();
+      }
+
+      for (let i = shooting.length - 1; i >= 0; i--) {
+        const sh = shooting[i];
+        sh.life++;
+        sh.x += Math.cos(sh.angle) * sh.speed;
+        sh.y += Math.sin(sh.angle) * sh.speed;
+        const alpha = 1 - sh.life / sh.maxLife;
+        const tailX = sh.x - Math.cos(sh.angle) * sh.len;
+        const tailY = sh.y - Math.sin(sh.angle) * sh.len;
+        const grad = ctx.createLinearGradient(sh.x, sh.y, tailX, tailY);
+        grad.addColorStop(0, `rgba(10,10,10,${alpha})`);
+        grad.addColorStop(1, 'rgba(10,10,10,0)');
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = 1.4;
+        ctx.beginPath();
+        ctx.moveTo(sh.x, sh.y);
+        ctx.lineTo(tailX, tailY);
+        ctx.stroke();
+        if (sh.life > sh.maxLife) shooting.splice(i, 1);
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    window.addEventListener('resize', () => { resize(); initStars(); });
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = e.clientX; mouse.y = e.clientY; mouse.active = true;
+    });
+    window.addEventListener('mouseleave', () => { mouse.active = false; });
+    window.addEventListener('touchmove', (e) => {
+      if (e.touches[0]) {
+        mouse.x = e.touches[0].clientX;
+        mouse.y = e.touches[0].clientY;
+        mouse.active = true;
+      }
+    }, { passive: true });
+    window.addEventListener('touchend', () => { mouse.active = false; });
+
+    resize();
+    initStars();
+    draw();
+    setInterval(() => { if (Math.random() < 0.6) spawnShooting(); }, 3500);
+  })();
+
+  (function () {
+    const dot = document.getElementById('cursorDot');
+    const ring = document.getElementById('cursorRing');
+    if (!dot || !ring) return;
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', (e) => {
+      mx = e.clientX; my = e.clientY;
+      dot.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
+    });
+    function follow() {
+      rx += (mx - rx) * 0.18;
+      ry += (my - ry) * 0.18;
+      ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%)`;
+      requestAnimationFrame(follow);
+    }
+    follow();
+    document.querySelectorAll('a, button').forEach((el) => {
+      el.addEventListener('mouseenter', () => ring.classList.add('hover'));
+      el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
+    });
+    document.addEventListener('mouseleave', () => {
+      dot.style.opacity = '0';
+      ring.style.opacity = '0';
+    });
+    document.addEventListener('mouseenter', () => {
+      dot.style.opacity = '1';
+      ring.style.opacity = '1';
+    });
+    document.addEventListener('contextmenu', (e) => e.preventDefault());
+    document.addEventListener('dragstart', (e) => e.preventDefault());
+  })();
+  </script>
+</body>
+</html>
